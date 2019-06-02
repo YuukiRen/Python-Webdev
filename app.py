@@ -70,4 +70,3 @@ def get_by_id():
 
 if __name__ == '__main__':
     app.run()
-postgres://ndjfjdaqecakwt:c4444fec8c566815207a1bda26f921505cf0399df9b29eb25b7944e88bc125e8@ec2-54-225-106-93.compute-1.amazonaws.com:5432/d4iseb498qj31j
