@@ -1,8 +1,6 @@
 # app/models.py
 
 from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
-
 from app import db, login_manager, bcrypt
 
 
@@ -16,7 +14,7 @@ class User(UserMixin, db.Model):
     first_name = db.Column(db.String(191), index=True)
     last_name = db.Column(db.String(191), index=True)
     password_hash = db.Column(db.String(191))
-    task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
+    tasks = db.relationship('Task', backref='user',lazy='dynamic')
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     is_admin = db.Column(db.Boolean, default=False)
 
@@ -31,8 +29,7 @@ class User(UserMixin, db.Model):
 
     def verify_password(self, password):
         # check apakah password sama dengan yang di db
-        return bcrypt.check_password_hash(self.password, password)
-
+        return bcrypt.check_password_hash(self.password_hash, password)
     # representasi user
     def __repr__(self):
         return '<Username: {}>'.format(self.username)
@@ -47,11 +44,13 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(191))
     description = db.Column(db.String(255))
-    users = db.relationship('User', backref='task',lazy='dynamic')
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
         return '<id: {}>'.format(self.id)
 
+    def get_user(self):
+        return User.query.filter_by(id=self.user_id).first()
 
 class Role(db.Model):
     __tablename__ = 'roles'

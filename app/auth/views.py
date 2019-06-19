@@ -15,21 +15,16 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(email=form.email.data,
-                        username=form.username.data,
-                        first_name=form.first_name.data,
-                        last_name=form.last_name.data,
-                        password=form.password.data)
+                    username=form.username.data,
+                    first_name=form.first_name.data,
+                    last_name=form.last_name.data,
+                    password=form.password.data)
 
         db.session.add(user)
         db.session.commit()
         flash('You have successfully registered! You may now login.')
-
-        # redirect to the login page
         return redirect(url_for('auth.login'))
-
-    # load registration template
     return render_template('auth/register.html', form=form, title='Register')
-
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -42,7 +37,11 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user)
-            return redirect(url_for('home.dashboard'))
+            # jika admin,redirect ke page admin, jika bukan , ke dashboard biasa
+            if user.is_admin:
+                return redirect(url_for('home.admin_dashboard'))
+            else:
+                return redirect(url_for('home.dashboard'))
         # jika tidak sama, kembalikan warning
         else:
             flash('Invalid email or password.')

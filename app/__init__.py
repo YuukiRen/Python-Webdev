@@ -37,4 +37,7 @@ def create_app(env_config):
 	from .home import home as home_blueprint
 	app.register_blueprint(home_blueprint)
 
+	from .user import user as user_blueprint
+	app.register_blueprint(user_blueprint)
+
 	return app

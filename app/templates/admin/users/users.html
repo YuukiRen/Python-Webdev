@@ -1,0 +1,62 @@
+<!-- app/templates/admin/users/users.html -->
+
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Users{% endblock %}
+{% block body %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        {{ utils.flashed_messages() }}
+        <br/>
+        <h1 style="text-align:center;">Users</h1>
+        {% if users %}
+          <div class="container">
+          <div class="row">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th width="15%"> Name </th>
+                  <th width="30%"> Role </th>
+                  <th width="15%"> Assign </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for user in users %}
+                {% if user.is_admin %}
+                    <tr>
+                        <td style="background-color: #aec251; color: white;"> <i class="fa fa-key"></i> Admin </td>
+                        <td style="background-color: #aec251; color: white;"> N/A </td>
+                        <td style="background-color: #aec251; color: white;"> N/A </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                      <td> {{ user.first_name }} {{ user.last_name }} </td>
+                      <td>
+                        {% if user.role %}
+                          {{ user.role.name }}
+                        {% else %}
+                          -
+                        {% endif %}
+                      </td>
+                      <td>
+                        <a href="{{ url_for('admin.assign_user', id=user.id) }}" class="btn btn-info btn-lg">
+                          <i class="fa fa-user-plus"></i> Assign
+                        </a>
+                      </td>
+                    </tr>
+                {% endif %}
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

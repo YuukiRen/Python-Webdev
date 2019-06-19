@@ -5,16 +5,22 @@
 {% extends "base.html" %}
 {% block title %}Login{% endblock %}
 {% block body %}
-<div class="content-section">
+<div class="container">
   <br/>
   <!-- menampilkan pesan yang di flash dari code -->
   {{ utils.flashed_messages() }}
   <br/>
-  <div class="center">
-    <h1>Login to your account</h1>
-    <br/>
-    <!-- menampilkan template form dengan kolom tertentu dari forms.py -->
-    {{ wtf.quick_form(form) }}
-  </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Login to your account</div>
+
+                <div class="card-body">
+                  <!-- menampilkan template form dengan kolom tertentu dari forms.py -->
+                  {{ wtf.quick_form(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
